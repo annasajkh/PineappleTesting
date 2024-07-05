@@ -25,7 +25,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="PineappleFramework" Version="1.0.9" />
+	  <PackageReference Include="PineappleFramework" Version="1.1.0" />
 	</ItemGroup>
 	
 </Project>
