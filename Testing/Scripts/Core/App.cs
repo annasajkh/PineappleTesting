@@ -2,8 +2,6 @@
 
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
-using OpenTK.Windowing.GraphicsLibraryFramework;
-using Pineapple.Audio;
 using Pineapple.Core;
 using SkiaSharp;
 using Window = Pineapple.Core.Window;
@@ -14,11 +12,6 @@ public class App
 {
     float time;
     SKImage? catImage;
-    MusicPlayer? musicPlayer;
-    Music? music;
-
-    SoundEffect? soundEffect;
-    SoundEffectPlayer soundEffectPlayer;
 
     Random random = new Random();
 
@@ -33,47 +26,10 @@ public class App
     void Load()
     {
         catImage = SKImage.FromEncodedData(Path.Combine("Assets", "Sprites", "this fucking cat.png"));
-        musicPlayer = new MusicPlayer();
-        music = Music.Load(Path.Combine("Assets", "Musics", "Different Heaven & Sian Area - Feel Like Horrible [NCS Release].ogg"), AudioType.Ogg);
-        music.Volume = 50;
-
-        musicPlayer.SetSource(music);
-        musicPlayer.Play();
-
-        soundEffectPlayer = new SoundEffectPlayer(); 
-        soundEffect = SoundEffect.LoadWav(Path.Combine("Assets", "Sounds", "meow.wav"), volume: 128, loop: true);
-
-        soundEffectPlayer.SetSource(soundEffect);
-        
-        for (int i = 0; i < 3; i++)
-        {
-            Task task = PlaySoundEffectAsync(soundEffectPlayer, soundEffect);
-        }
-    }
-
-    async Task PlaySoundEffectAsync(SoundEffectPlayer soundEffectPlayer, SoundEffect soundEffect)
-    {
-        await Task.Delay(random.Next() % 3000);
-
-        soundEffectPlayer.Play();
     }
 
     void Update(float delta)
     {
-        if (Input.IsKeyPressed(Keys.P))
-        {
-            musicPlayer!.Paused = !musicPlayer.Paused;
-
-            if (musicPlayer.Paused)
-            {
-                Console.WriteLine("Music is paused");
-            }
-            else
-            {
-                Console.WriteLine("Music is unpaused");
-            }
-        }
-
         time += delta;
     }
 
@@ -101,7 +57,6 @@ public class App
     void Unload()
     {
         catImage!.Dispose();
-        music!.Dispose();
     }
 
     public void Run()
