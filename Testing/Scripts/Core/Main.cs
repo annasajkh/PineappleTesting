@@ -1,41 +1,48 @@
 ﻿// Ignore Spelling: App
 
-using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
 using Pineapple.Core;
 using SkiaSharp;
 using Window = Pineapple.Core.Window;
+using Pineapple.Abstract;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Testing.Scripts.Core;
 
-public class App
+public class Main : Scene
 {
     float time;
     SKImage? catImage;
+    SKPaint paint;
 
     Random random = new Random();
 
-    public App()
-    {
-        Application.Load += Load;
-        Application.Update += Update;
-        Application.Draw += Draw;
-        Application.Unload += Unload;
-    }
-
-    void Load()
+    public override void Load()
     {
         catImage = SKImage.FromEncodedData(Path.Combine("Assets", "Sprites", "this fucking cat.png"));
+
+        paint = new SKPaint
+        {
+            Color = SKColors.White,
+            IsAntialias = true,
+            Style = SKPaintStyle.Fill,
+            TextAlign = SKTextAlign.Center,
+            TextSize = 32
+        };
     }
 
-    void Update(float delta)
+    public override void Update(float delta)
     {
         time += delta;
+
+        if (Input.IsKeyPressed(Keys.S))
+        {
+            Program.SceneManager.ChangeScene("Settings");
+        }
     }
 
-    void Draw(SKCanvas canvas, SKPaint paint)
+    public override void Draw(SKCanvas canvas)
     {
-        canvas.Clear(SKColors.CornflowerBlue);
+        canvas.Clear(SKColor.Parse("#1e2226"));
 
         canvas.DrawImage(catImage, new SKPoint(100, 100), paint);
 
@@ -54,13 +61,9 @@ public class App
         canvas.DrawCircle(new SKPoint(Input.MousePosition.X, Input.MousePosition.Y), 50, paint);
     }
 
-    void Unload()
+    public override void Unload()
     {
         catImage!.Dispose();
-    }
-
-    public void Run()
-    {
-        Application.Run(title: "Testing", size: new Vector2i(960, 540), windowBorder: WindowBorder.Resizable);
+        paint.Dispose();
     }
 }
