@@ -63,6 +63,8 @@ public class Main : Scene
 
     public override void Unload()
     {
+        Console.WriteLine("Dispose");
+
         catImage!.Dispose();
         paint.Dispose();
     }
